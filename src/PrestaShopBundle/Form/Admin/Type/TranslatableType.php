@@ -116,6 +116,31 @@ class TranslatableType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $errors = [];
+
+        foreach ($view->vars['errors'] as $existingError) {
+            $errors[] = $existingError;
+        }
+
+        $errorsByLocale = $this->getErrorsByLocale($view, $form, $options['locales']);
+
+        if (!empty($errorsByLocale)) {
+            foreach ($errorsByLocale as $errorByLocale) {
+                /** Needs to be translated */
+                $modifiedErrorMessage = $this->trans(
+                    '%error_message% - Language: %language_name%',
+                    'Admin.Notifications.Error',
+                    [
+                        '%error_message%' => $errorByLocale['error_message'],
+                        '%language_name%' => $errorByLocale['locale_name'],
+                    ]
+                );
+                $errors[] = new FormError($modifiedErrorMessage);
+            }
+        }
+
+        $varsForm = $view->vars['errors']->getForm();
+        $view->vars['errors'] = new FormErrorIterator($varsForm, $errors);
         $view->vars['locales'] = $options['locales'];
         $view->vars['default_locale'] = $this->getDefaultLocale($options['locales']);
         $view->vars['hide_locales'] = 1 >= count($options['locales']);
@@ -125,8 +150,6 @@ class TranslatableType extends AbstractType
                 'admin_employees_change_form_language'
             );
         }
-
-        $this->setErrorsByLocale($view, $form, $options['locales']);
     }
 
     /**
@@ -169,7 +192,7 @@ class TranslatableType extends AbstractType
      * @param FormInterface $form
      * @param array $locales
      */
-    private function setErrorsByLocale(FormView $view, FormInterface $form, array $locales)
+    private function getErrorsByLocale(FormView $view, FormInterface $form, array $locales)
     {
         if (count($locales) <= 1) {
             return;
@@ -178,7 +201,7 @@ class TranslatableType extends AbstractType
         $formErrors = $form->getErrors(true);
 
         if (empty($formErrors)) {
-            return;
+            return null;
         }
 
         if (1 === count($formErrors)) {
@@ -189,10 +212,10 @@ class TranslatableType extends AbstractType
             );
 
             if (null !== $errorByLocale) {
-                $view->vars['error_by_locale'] = $errorByLocale;
+                return [$errorByLocale];
             }
 
-            return;
+            return null;
         }
 
         $errorsByLocale = $this->getTranslatableErrors(
@@ -201,9 +224,7 @@ class TranslatableType extends AbstractType
             $locales
         );
 
-        if (null !== $errorsByLocale) {
-            $view->vars['errors_by_locale'] = $errorsByLocale;
-        }
+        return $errorsByLocale;
     }
 
     /**
@@ -274,7 +295,7 @@ class TranslatableType extends AbstractType
             if ($doesLocaleExistForInvalidForm) {
                 foreach ($formErrors as $formError) {
                     if ($this->doesErrorFormAndCurrentFormMatches($formError->getOrigin(), $formItem)) {
-                        $errorsByLocale[$locales[$iteration]['iso_code']] = [
+                        $errorsByLocale[] = [
                             'locale_name' => $locales[$iteration]['name'],
                             'error_message' => $formError->getMessage(),
                         ];
