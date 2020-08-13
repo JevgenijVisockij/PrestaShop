@@ -26,21 +26,22 @@
 
 namespace PrestaShopBundle\Form\Admin\Type;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class TranslatableType adds translatable inputs with custom inner type to forms.
  * Language selection uses a dropdown.
  */
-class TranslatableType extends AbstractType
+class TranslatableType extends TranslatorAwareType
 {
     /**
      * @var array List of enabled locales
@@ -80,12 +81,15 @@ class TranslatableType extends AbstractType
      * @param int $defaultShopLanguageId
      */
     public function __construct(
+        TranslatorInterface $translator,
+        array $locales,
         array $availableLocales,
         UrlGeneratorInterface $urlGenerator,
         $saveFormLocaleChoice,
         $defaultFormLanguageId,
         $defaultShopLanguageId
     ) {
+        parent::__construct($translator, $locales);
         $this->enabledLocales = $this->filterEnableLocales($availableLocales);
         $this->availableLocales = $availableLocales;
         $this->urlGenerator = $urlGenerator;
