@@ -434,6 +434,7 @@ services:
         arguments:
             - '@=service("prestashop.adapter.data_provider.currency").getDefaultCurrencyIsoCode()'
             - '@=service("prestashop.adapter.data_provider.cms").getCmsChoices()'
+            - '@prestashop.router'
         tags:
             - { name: form.type }
 

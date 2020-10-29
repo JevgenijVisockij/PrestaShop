@@ -22,23 +22,31 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  *#}
-{% extends '@PrestaShop/Admin/layout.html.twig' %}
-{% trans_default_domain "Admin.Shopparameters.Feature" %}
 
-{% block content %}
-  <div class="row justify-content-center">
-      {# General options block #}
-      {% include '@PrestaShop/Admin/Configure/ShopParameters/OrderPreferences/Blocks/order_preferences_general.html.twig' %}
+{% form_theme generalForm 'PrestaShopBundle:Admin/TwigTemplateForm:prestashop_ui_kit.html.twig' %}
 
-    {{ form_start(giftOptionsForm, {attr : {class: 'form col-xl-10', id: 'configuration_gift_options_form'}, action: path('admin_order_preferences_gift_options_save') }) }}
-      {# Gift options block #}
-      {% include '@PrestaShop/Admin/Configure/ShopParameters/OrderPreferences/Blocks/order_preferences_gift_options.html.twig' %}
-    {{ form_end(giftOptionsForm) }}
-  </div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-
-    <script src="{{ asset('themes/new-theme/public/order_preferences.bundle.js') }}"></script>
+{% block order_preferences_general %}
+  {% set form_submit = form_widget(generalForm[form_submit_key]) %}
+  {{ form_start(form) }}
+    <div class="col-xl-10">
+        <div class="card">
+            <h3 class="card-header">
+              {% if form_icon is defined %}
+                <i class="material-icons">{{ form_icon }}</i>
+              {% endif %}
+              {{ form_label }}
+            </h3>
+            <div class="card-block row">
+                <div class="card-text">
+                  {{ form_widget(form) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                  {{ form_submit|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+  {{ form_end(form) }}
 {% endblock %}

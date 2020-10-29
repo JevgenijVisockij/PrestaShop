@@ -30,8 +30,12 @@ use PrestaShop\PrestaShop\Adapter\Configuration;
 use PrestaShopBundle\Form\Admin\Type\MoneyWithSuffixType;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
+use PrestaShopBundle\Service\Routing\Router;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -53,16 +57,35 @@ class GeneralType extends TranslatorAwareType
      */
     private $tosCmsChoices;
 
+    /**
+     * @var \PrestaShopBundle\Service\Routing\Router
+     */
+    private $router;
+
     public function __construct(
         TranslatorInterface $translator,
         array $locales,
         $defaultCurrencyIsoCode,
-        array $tosCmsChoices
+        array $tosCmsChoices,
+        Router $router
     ) {
         parent::__construct($translator, $locales);
 
         $this->defaultCurrencyIsoCode = $defaultCurrencyIsoCode;
         $this->tosCmsChoices = $tosCmsChoices;
+        $this->router = $router;
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+        $view->vars['form_icon'] = 'settings';
+        $view->vars['form_label'] = $this->trans('General', 'Admin.Global');
+        $view->vars['attr'] = [
+            'id' => 'configuration_general_form',
+            'class' => 'form col-xl-10'
+        ];
+        $view->vars['action'] = $this->router->generate('admin_order_preferences_general_save');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -126,6 +149,12 @@ class GeneralType extends TranslatorAwareType
                 'help' => $this->trans('Choose the page which contains your store\'s terms and conditions of use.', 'Admin.Shopparameters.Help'),
                 'placeholder' => $this->trans('None', 'Admin.Global'),
                 'choices' => $this->tosCmsChoices,
+            ])
+            ->add('submit', SubmitType::class, [
+                'attr' => [
+                    'id' => 'form-general-save-button'
+                ],
+                'label' => $this->trans('Save', 'Admin.Actions'),
             ]);
     }
 
