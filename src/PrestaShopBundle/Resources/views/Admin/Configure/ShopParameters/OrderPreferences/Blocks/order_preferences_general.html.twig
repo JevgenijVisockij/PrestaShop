@@ -24,12 +24,13 @@
  *#}
 
 {% form_theme generalForm 'PrestaShopBundle:Admin/TwigTemplateForm:prestashop_ui_kit.html.twig' %}
-
-{% include '@PrestaShop/Admin/default_form.html.twig' with
-  {
-    'form_icon': generalForm.vars.form_icon,
-    'form_label': generalForm.vars.form_label,
-    'form_submit_key': 'submit',
-    'form': generalForm
-  }
-%}
+{% block order_preferences_general %}
+  {% include '@PrestaShop/Admin/default_form.html.twig' with
+    {
+      'form_icon': generalForm.vars.form_icon,
+      'form_label': generalForm.vars.form_label,
+      'form_submit_key': 'submit',
+      'form': generalForm
+    }
+  %}
+{% endblock %}
