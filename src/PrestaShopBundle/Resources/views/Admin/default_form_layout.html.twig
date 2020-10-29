@@ -23,14 +23,8 @@
  * @license   https://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
  *#}
 
-{% form_theme generalForm 'PrestaShopBundle:Admin/TwigTemplateForm:prestashop_ui_kit.html.twig' %}
-{% block order_preferences_general %}
-  {% include '@PrestaShop/Admin/default_form.html.twig' with
-    {
-      'form_icon': generalForm.vars.form_icon,
-      'form_label': generalForm.vars.form_label,
-      'form_submit_key': 'submit',
-      'form': generalForm
-    }
-  %}
+{% extends '@PrestaShop/Admin/layout.html.twig' %}
+
+{% block content %}
+  {% include '@PrestaShop/Admin/default_form.html.twig' %}
 {% endblock %}

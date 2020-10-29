@@ -24,13 +24,29 @@
  *#}
 
 {% form_theme generalForm 'PrestaShopBundle:Admin/TwigTemplateForm:prestashop_ui_kit.html.twig' %}
+
 {% block order_preferences_general %}
-  {% include '@PrestaShop/Admin/default_form.html.twig' with
-    {
-      'form_icon': generalForm.vars.form_icon,
-      'form_label': generalForm.vars.form_label,
-      'form_submit_key': 'submit',
-      'form': generalForm
-    }
-  %}
+  {% set form_submit = form_widget(generalForm[form_submit_key]) %}
+  {{ form_start(form) }}
+    <div class="col-xl-10">
+        <div class="card">
+            <h3 class="card-header">
+              {% if form_icon is defined %}
+                <i class="material-icons">{{ form_icon }}</i>
+              {% endif %}
+              {{ form_label }}
+            </h3>
+            <div class="card-block row">
+                <div class="card-text">
+                  {{ form_widget(form) }}
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                  {{ form_submit|raw }}
+                </div>
+            </div>
+        </div>
+    </div>
+  {{ form_end(form) }}
 {% endblock %}

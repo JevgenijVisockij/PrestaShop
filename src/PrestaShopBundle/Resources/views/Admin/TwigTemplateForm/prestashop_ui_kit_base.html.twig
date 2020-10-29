@@ -193,6 +193,11 @@
   {{- parent() -}}
 {%- endblock %}
 
+{%- block submit_widget -%}
+  {% set attr = attr|merge({class: (attr.class|default('btn-primary') ~ ' btn')|trim}) %}
+  {{ block('button_widget') }}
+{%- endblock submit_widget -%}
+
 {#{% block checkbox_widget -%}
   {% set parent_label_class = parent_label_class|default('') -%}
   {% if 'checkbox-inline' in parent_label_class %}
