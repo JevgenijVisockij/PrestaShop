@@ -36,6 +36,7 @@ use PrestaShopBundle\Form\Admin\Type\EmailType;
 use PrestaShopBundle\Form\Admin\Type\ShopChoiceTreeType;
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -44,7 +45,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -179,8 +179,8 @@ final class EmployeeType extends TranslatorAwareType
             $builder->add('change_password', ChangePasswordType::class, [
                 'label' => $this->trans('Change password...', 'messages'),
                 'row_attr' => [
-                    'class' => 'btn-outline-secondary js-change-password'
-                ]
+                    'class' => 'btn-outline-secondary js-change-password',
+                ],
             ]);
 
             if ($options['show_addons_connect_button']) {
@@ -200,7 +200,7 @@ final class EmployeeType extends TranslatorAwareType
                             'class' => 'btn-outline-secondary',
                             'data-toggle' => 'modal',
                             'data-target' => $target,
-                        ]
+                        ],
                     ]
                 );
             }
@@ -210,7 +210,7 @@ final class EmployeeType extends TranslatorAwareType
                 'label' => $this->trans('Password', 'Admin.Global'),
                 'help' => $this->trans(
                     'Password should be at least %num% characters long.',
-                    'Admin.Global',
+                    'Admin.Advparameters.Help',
                     ['%num%' => self::PASSWORD_MIN_CHARACTER_AMOUNT]
                 ),
                 'constraints' => [
@@ -227,7 +227,7 @@ final class EmployeeType extends TranslatorAwareType
                 'row_attr' => [
                     'data-minimumResultsForSearch' => '7',
                     'data-toggle' => '2',
-                ]
+                ],
             ])
             ->add('language', ChoiceType::class, [
                 'label' => $this->trans('Language', 'Admin.Global'),
@@ -254,8 +254,8 @@ final class EmployeeType extends TranslatorAwareType
                         'label' => $this->trans('Permission profile', 'Admin.Advparameters.Feature'),
                         'row_attr' => [
                             'data-admin-profile' => $this->superAdminProfileId,
-                            'data-get-tabs-url' => $this->router->generate('admin_employees_get_tabs')
-                        ]
+                            'data-get-tabs-url' => $this->router->generate('admin_employees_get_tabs'),
+                        ],
                     ]
                 )
             ;
