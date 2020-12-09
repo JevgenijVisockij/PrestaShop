@@ -169,7 +169,7 @@ final class EmployeeType extends TranslatorAwareType
                     $this->getNotBlankConstraint(),
                     $this->getLengthConstraint(EmployeeEmail::MAX_LENGTH),
                     new Email([
-                        'message' => $this->trans('This field is invalid', 'Admin.Notifications.Error'),
+                        'message' => $this->trans('This field is invalid.', 'Admin.Notifications.Error'),
                     ]),
                 ],
             ])
