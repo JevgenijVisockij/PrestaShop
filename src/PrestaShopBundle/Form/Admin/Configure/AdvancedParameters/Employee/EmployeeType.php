@@ -107,7 +107,7 @@ final class EmployeeType extends TranslatorAwareType
      * @param string $defaultAvatarUrl
      * @param bool $isAddonsConnected
      * @param int $superAdminProfileId
-     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+     * @param Router $router
      */
     public function __construct(
         TranslatorInterface $translator,
