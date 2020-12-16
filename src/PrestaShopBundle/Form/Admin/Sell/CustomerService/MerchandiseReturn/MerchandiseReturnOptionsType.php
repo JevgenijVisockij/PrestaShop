@@ -28,7 +28,7 @@ namespace PrestaShopBundle\Form\Admin\Sell\CustomerService\MerchandiseReturn;
 
 use PrestaShopBundle\Form\Admin\Type\SwitchType;
 use PrestaShopBundle\Form\Admin\Type\TranslatableType;
-use Symfony\Component\Form\AbstractType;
+use PrestaShopBundle\Form\Admin\Type\TranslatorAwareType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 /**
  * Form type for merchandise returns options
  */
-class MerchandiseReturnOptionsType extends AbstractType
+class MerchandiseReturnOptionsType extends TranslatorAwareType
 {
     /**
      * {@inheritdoc}
@@ -45,15 +45,21 @@ class MerchandiseReturnOptionsType extends AbstractType
     {
         $builder
             ->add('enable_order_return', SwitchType::class, [
+                'label' => $this->trans('Enable returns', 'Admin.Orderscustomers.Feature'),
+                'help' => $this->trans('Would you like to allow merchandise returns in your shop?', 'Admin.Orderscustomers.Help'),
                 'required' => false,
             ])
             ->add('order_return_period_in_days', IntegerType::class, [
+                'label' => $this->trans('Time limit of validity', 'Admin.Orderscustomers.Feature'),
+                'help' => $this->trans('How many days after the delivery date does the customer have to return a product?', 'Admin.Orderscustomers.Help'),
                 'required' => false,
                 'constraints' => new GreaterThanOrEqual([
                     'value' => 0,
                 ]),
             ])
             ->add('order_return_prefix', TranslatableType::class, [
+                'label' => $this->trans('Return prefix', 'Admin.Orderscustomers.Feature'),
+                'help' => $this->trans('Prefix used for merchandise returns (e.g. RE00001).', 'Admin.Orderscustomers.Help'),
                 'required' => false,
             ])
         ;

@@ -1143,6 +1143,13 @@ services:
         tags:
             - { name: form.type }
 
+    form.type.merchandise_return.options:
+        class: 'PrestaShopBundle\Form\Admin\Sell\CustomerService\MerchandiseReturn\MerchandiseReturnOptionsType'
+        parent: 'form.type.translatable.aware'
+        public: true
+        tags:
+            - { name: form.type }
+
     form.type.order.message:
         class: 'PrestaShopBundle\Form\Admin\Sell\CustomerService\OrderMessageType'
         tags:
@@ -1233,7 +1240,7 @@ services:
         public: true
         tags:
             - { name: form.type }
-            
+
     form.type.logs_by_email:
         class: 'PrestaShopBundle\Form\Admin\Configure\AdvancedParameters\Logs\LogsByEmailType'
         parent: 'form.type.translatable.aware'
