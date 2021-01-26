@@ -46,6 +46,7 @@ use PrestaShop\PrestaShop\Core\Domain\ShowcaseCard\Query\GetShowcaseCardIsClosed
 use PrestaShop\PrestaShop\Core\Domain\ShowcaseCard\ValueObject\ShowcaseCard;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilderInterface;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Handler\FormHandler;
+use PrestaShop\PrestaShop\Core\Image\Uploader\Exception\UploadedImageConstraintException;
 use PrestaShop\PrestaShop\Core\Search\Filters\EmployeeFilters;
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use PrestaShopBundle\Security\Annotation\AdminSecurity;
@@ -477,6 +478,8 @@ class EmployeeController extends FrameworkBundleAdminController
      */
     protected function getErrorMessages(Exception $e)
     {
+        $iniConfig = $this->get('prestashop.core.configuration.ini_configuration');
+
         return [
             InvalidEmployeeIdException::class => $this->trans(
                 'The object cannot be loaded (the identifier is missing or invalid)',
@@ -486,6 +489,16 @@ class EmployeeController extends FrameworkBundleAdminController
                 'The object cannot be loaded (or found)',
                 'Admin.Notifications.Error'
             ),
+            UploadedImageConstraintException::class => [
+                UploadedImageConstraintException::EXCEEDED_SIZE => $this->trans(
+                    'Max file size allowed is "%s" bytes.', 'Admin.Notifications.Error', [
+                    $iniConfig->getUploadMaxSizeInBytes(),
+                ]),
+                UploadedImageConstraintException::UNRECOGNIZED_FORMAT => $this->trans(
+                    'Image format not recognized, allowed formats are: .gif, .jpg, .png',
+                    'Admin.Notifications.Error'
+                ),
+            ],
             AdminEmployeeException::class => [
                 AdminEmployeeException::CANNOT_CHANGE_LAST_ADMIN => $this->trans(
                     'You cannot disable or delete the administrator account.',
