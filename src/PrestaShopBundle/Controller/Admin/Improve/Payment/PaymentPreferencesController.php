@@ -100,7 +100,7 @@ class PaymentPreferencesController extends FrameworkBundleAdminController
      *
      * @return RedirectResponse
      */
-    public function processPaymentCarrierRestrictionsFormAction(Request $request): Response
+    public function processPaymentCarrierRestrictionsFormAction(Request $request): RedirectResponse
     {
         $carrierRestrictionsFormHandler = $this->getPaymentCarrierRestrictionsFormHandler();
 
@@ -120,7 +120,7 @@ class PaymentPreferencesController extends FrameworkBundleAdminController
      *
      * @return RedirectResponse
      */
-    public function processPaymentCountryRestrictionsFormAction(Request $request): Response
+    public function processPaymentCountryRestrictionsFormAction(Request $request): RedirectResponse
     {
         $countryRestrictionsFormHandler = $this->getPaymentCountryRestrictionsFormHandler();
 
@@ -140,7 +140,7 @@ class PaymentPreferencesController extends FrameworkBundleAdminController
      *
      * @return RedirectResponse
      */
-    public function processPaymentCurrencyRestrictionsFormAction(Request $request): Response
+    public function processPaymentCurrencyRestrictionsFormAction(Request $request): RedirectResponse
     {
         $currencyRestrictionsFormHandler = $this->getPaymentCurrencyRestrictionsFormHandler();
 
@@ -160,7 +160,7 @@ class PaymentPreferencesController extends FrameworkBundleAdminController
      *
      * @return RedirectResponse
      */
-    public function processPaymentGroupRestrictionsFormAction(Request $request): Response
+    public function processPaymentGroupRestrictionsFormAction(Request $request): RedirectResponse
     {
         $groupRestrictionsFormHandler = $this->getPaymentGroupRestrictionsFormHandler();
 
