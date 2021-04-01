@@ -42,6 +42,7 @@ use PrestaShop\PrestaShop\Core\Domain\Employee\Exception\InvalidEmployeeIdExcept
 use PrestaShop\PrestaShop\Core\Domain\Employee\Exception\InvalidProfileException;
 use PrestaShop\PrestaShop\Core\Domain\Employee\Exception\MissingShopAssociationException;
 use PrestaShop\PrestaShop\Core\Domain\Employee\Query\GetEmployeeForEditing;
+use PrestaShop\PrestaShop\Core\Domain\Employee\ValueObject\Password;
 use PrestaShop\PrestaShop\Core\Domain\ShowcaseCard\Query\GetShowcaseCardIsClosed;
 use PrestaShop\PrestaShop\Core\Domain\ShowcaseCard\ValueObject\ShowcaseCard;
 use PrestaShop\PrestaShop\Core\Form\IdentifiableObject\Builder\FormBuilderInterface;
@@ -299,6 +300,7 @@ class EmployeeController extends FrameworkBundleAdminController
             'employeeForm' => $employeeForm->createView(),
             'showAddonsConnectButton' => false,
             'enableSidebar' => true,
+            'passwordMinLength' => Password::MIN_LENGTH,
         ];
 
         return $this->render(
@@ -384,6 +386,7 @@ class EmployeeController extends FrameworkBundleAdminController
         }
 
         $templateVars = [
+            'passwordMinLength' => Password::MIN_LENGTH,
             'employeeForm' => $employeeForm->createView(),
             'isRestrictedAccess' => $isRestrictedAccess,
             'showAddonsConnectButton' => $canAccessAddonsConnect,
