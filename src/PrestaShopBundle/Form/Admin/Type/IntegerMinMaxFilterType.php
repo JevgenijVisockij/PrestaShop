@@ -74,8 +74,13 @@ final class IntegerMinMaxFilterType extends AbstractType
             $options['max_field_options']['attr']['min'] = 0;
         }
 
-        $options['min_field_options']['attr']['step'] = 1;
-        $options['max_field_options']['attr']['step'] = 1;
+        if (!isset($options['min_field_options']['attr']['step'])) {
+            $options['min_field_options']['attr']['step'] = 1;
+        }
+
+        if (!isset($options['max_field_options']['attr']['step'])) {
+            $options['max_field_options']['attr']['step'] = 1;
+        }
 
         $builder->add('min_field', IntegerType::class, $options['min_field_options']);
         $builder->add('max_field', IntegerType::class, $options['max_field_options']);
